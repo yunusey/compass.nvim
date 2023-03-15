@@ -1,36 +1,39 @@
-# compass.nvim
-Quickly iterate through your pages using hitns provided. :sunglasses:
+# compass.nvim 🧭
+Quickly iterate through your pages using hints provided. 😎
 
-![Example](https://user-images.githubusercontent.com/107340417/225203822-956b351c-5c3e-492e-b22d-4b1f226d969a.png)
+![](https://user-images.githubusercontent.com/107340417/225203822-956b351c-5c3e-492e-b22d-4b1f226d969a.png)
 
 https://user-images.githubusercontent.com/107340417/225202546-4e4cb239-5f6f-47bd-bdbf-b0668749f012.mp4
 
-# Setup
+# Setup 📦
 You can setup using different package managers.
 
 ## Packer
 ```lua
+-- In init.lua
 use 'yunusey/compass.nvim'
 require('compass').setup({
-  -- your config here
+  	-- your config here
 })
 ```
 
-## Lazy
+## Lazy 💤
 ```lua
--- In lua/plugins/
+-- In lua/plugins/compass.lua
 local spec = {
-  "yunusey/compass.nvim",
-  configure = function ()
-    require('compass').setup({
-      -- your config here
-    })
-  end
+  	"yunusey/compass.nvim",
+  	configure = function ()
+    	require('compass').setup({
+      		-- your config here
+    	})
+  	end
 }
 return spec 
 ```
 
-# Configuration
+PS: There are also other package managers that you can use...
+
+# Configuration ⚙️
 `compass.nvim` comes with several default options:
 ```lua
 M.def_opts = { -- Default options
@@ -45,7 +48,7 @@ M.def_opts = { -- Default options
 		'i', 'o', 'c',
 		'v', 'b', 'n',
 	},
-	window = { -- Gets the same argument as |nvim_open_win|
+	window = { -- Gets the same arguments as |nvim_open_win|
 		width  = 2,
 		height = 1,
 		border = "rounded",
@@ -54,18 +57,25 @@ M.def_opts = { -- Default options
 }
 
 ```
-You can change the color and the style of the highlight. Takes the same arguments with ```|vim.api.nvim_set_hl|```. You can also change the command-prompt by changing ```hlname```. 
+You can change the color and the style of the highlight. Takes the same arguments with ```|vim.api.nvim_set_hl|```. You can also change the highlight-name by changing ```hlname```. 
 
-You can set your precedence. While creating hints, compass iterates through all the precedence.
+You can set your ```precedence```. While creating hints, compass iterates through all the ```precedence``` table. Say you have three windows open, and your precedence table is the following:
+```lua
+precedence = {"j", "k", "l", "h", --[[other strs...]]}
+```
+
+`compass.nvim` assigns the first element (`j`) to the first window. Second element (`k`) to the second window. Third element (`l`) to the last window. Since all the windows have their own element assigned, iteration will end...
 
 You can change the width and the height of the hint-windows. Also, you can change the border & style. For more info, see ```|vim.api.nvim_open_win|```
 
-# Contribution
+# Contribution ✨
 All the contributions are highly appreciated. Please, make sure that you are creating issues about the bugs and enhancements you found. For questions about the plugin, please reach me out.
 
-# TODOs
+# TODOs ⚡
 * Create ```docs/```
-* Make a better documentation for github
 * Get tabline in the game (such hard thing 😐🥲)
 
-Thank you for visiting compass.nvim! Make sure to leave a star :smirk: 
+# Closing Words
+This plugin is actively getting updates, make sure to update your plugin very often.
+
+Thank you for visiting compass.nvim! Make sure to leave a star 😏
