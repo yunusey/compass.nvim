@@ -54,6 +54,7 @@ M.def_opts = { -- Default options
 		'i', 'o', 'c',
 		'v', 'b', 'n',
 	},
+	cancel = "q", -- Cancels compass
 	window = { -- Gets the same argument as |nvim_open_win|
 		width  = 2,
 		height = 1,
@@ -84,7 +85,11 @@ precedence = {"j", "k", "l", "h", --[[other strs...]]}
 ```
 
 `compass.nvim` assigns the first element (`j`) to the first window. Second element (`k`) to the second window. Third element (`l`) to the last window. Since all the windows have their own element assigned, iteration will end...
+ 
+## Cancel
+You can cancel the operation by 'q' by default. If you want to set anoter key, you need to change `cancel` key of `opts`.
 
+## Window
 You can change the width and the height of the hint-windows. Also, you can change the border & style. For more info, see ```|vim.api.nvim_open_win|```
 
 ## Keymaps
