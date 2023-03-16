@@ -16,6 +16,7 @@ M.def_opts = { -- Default options
 		'i', 'o', 'c',
 		'v', 'b', 'n',
 	},
+	cancel = "q", -- When clicked, closes the compass...
 	window = { -- Gets the same argument as |nvim_open_win|
 		width  = 2,
 		height = 1,
