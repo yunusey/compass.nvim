@@ -19,7 +19,12 @@ M.def_opts = { -- Default options
 		height = 1,
 		border = "rounded",
 		style  = "minimal",
-	}
+	},
+	keymaps = {
+		i = "<leader>cw",
+		n = "<leader>cw",
+		v = "<leader>cw",
+	},
 }
 
 M.setup = function (user_opts) -- User options
@@ -33,6 +38,18 @@ M.setup = function (user_opts) -- User options
 		M.opts.window[k] = M.opts.window[k] or v -- If given by the user, use it; else use default
 	end
 
+	for mode, keymap in pairs(M.opts.keymaps) do
+		if keymap == "" then
+			goto continue
+		end
+		vim.api.nvim_set_keymap(mode, keymap, "", {
+			callback = function ()
+				vim.cmd("stopinsert") -- To make sure that we're not in insert mode...
+				M.compass() -- Call the main function
+			end
+		})
+	    ::continue::
+	end
 
 end
 
