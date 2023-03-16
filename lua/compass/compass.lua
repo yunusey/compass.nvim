@@ -41,7 +41,7 @@ local createWindowWith = function (buffer, row, col, window_opts)
 		style = "minimal",
 		row = row, col = col,
 		width = window_opts.width, height = window_opts.height,
-		border ="rounded",
+		border = window_opts.border,
 	})
 
 	return window

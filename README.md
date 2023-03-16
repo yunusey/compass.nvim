@@ -53,6 +53,11 @@ M.def_opts = { -- Default options
 		height = 1,
 		border = "rounded",
 		style  = "minimal",
+	},
+	keymaps = {
+		i = "<leader>cw",
+		n = "<leader>cw",
+		v = "<leader>cw",
 	}
 }
 
@@ -67,6 +72,39 @@ precedence = {"j", "k", "l", "h", --[[other strs...]]}
 `compass.nvim` assigns the first element (`j`) to the first window. Second element (`k`) to the second window. Third element (`l`) to the last window. Since all the windows have their own element assigned, iteration will end...
 
 You can change the width and the height of the hint-windows. Also, you can change the border & style. For more info, see ```|vim.api.nvim_open_win|```
+
+`compass.nvim` comes with some default keymaps. You can either override, or delete them.
+
+## For deleting keymaps:
+
+```lua
+local compass = require('compass')
+compass.setup({
+	-- Your other configs
+	keymaps = {}, -- Assign it to an empty table
+	-- Your other configs
+})
+```
+
+## For overriding keymaps:
+
+```lua
+local compass = require('compass')
+compass.setup({
+	-- Your other configs
+	keymaps = {
+		n = "<C-w",
+		-- From now on, whenever you type 'Control-W' in normal mode, compass will be executed...
+		i = ",w",
+		-- From now on, whenever you type ',w' in insert mode, compass will be executed
+		v = "<leader>ww",
+		-- From now on, whenever you type '<leader>ww' in visual mode, compass will be executed
+	}, -- Assign it to an empty table
+	-- Your other configs
+})
+```
+
+PS: You do not necessarily need to fill for every mode. When you do not put a mode as a key, it'll not set a keymap for that mode.
 
 # Contribution ✨
 All the contributions are highly appreciated. Please, make sure that you are creating issues about the bugs and enhancements you found. For questions about the plugin, please reach me out.
