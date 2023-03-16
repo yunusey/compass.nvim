@@ -21,9 +21,9 @@ M.def_opts = { -- Default options
 		style  = "minimal",
 	},
 	keymaps = {
-		i = "<leader>cw",
-		n = "<leader>cw",
-		v = "<leader>cw",
+		i = "",
+		n = "<leader>ww",
+		v = "",
 	},
 }
 
