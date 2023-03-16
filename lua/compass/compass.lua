@@ -18,10 +18,7 @@ local deleteWindowsAndBuffers = function (invisible_win)
 	end
 end
 
-local openWinByHint = function (str, invisible_win)
-
-	deleteWindowsAndBuffers(invisible_win)
-
+local openWinByHint = function (str)
 	if init_windows[str] ~= nil then
 		local aimed_win = init_windows[str][3]
 		vim.api.nvim_set_current_win(aimed_win)
@@ -29,10 +26,7 @@ local openWinByHint = function (str, invisible_win)
 	init_windows = {}
 end
 
-local closeWinByHint = function (str, invisible_win)
-
-	deleteWindowsAndBuffers(invisible_win)
-
+local closeWinByHint = function (str)
 	if init_windows[str] ~= nil then
 		local aimed_win = init_windows[str][3]
 		vim.api.nvim_win_close(aimed_win, true)
@@ -119,12 +113,23 @@ local compass = function (opts)
 	for _, i in ipairs(opts.precedence) do
 		vim.api.nvim_buf_set_keymap(buf, "n", i, "", {
 			callback = function ()
-				openWinByHint(i, { win, buf })
+				deleteWindowsAndBuffers({ win, buf })
+				openWinByHint(i)
 			end
 		})
 		vim.api.nvim_buf_set_keymap(buf, "n", string.upper(i), "", {
 			callback = function ()
-				closeWinByHint(i, { win, buf })
+				deleteWindowsAndBuffers({ win, buf })
+				closeWinByHint(i)
+			end
+		})
+	end
+
+	-- Set the cancel keymap 
+	if opts.cancel ~= '' then
+		vim.api.nvim_buf_set_keymap(buf, "n", opts.cancel, "", {
+			callback = function ()
+				deleteWindowsAndBuffers({ win, buf })
 			end
 		})
 	end
