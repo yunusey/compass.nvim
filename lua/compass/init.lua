@@ -3,8 +3,10 @@ local M = {}
 M.opts = {}
 
 M.def_opts = { -- Default options
-	highlight = { fg = "#00ff00" },
-	hlname = "CompassHintWindow",
+	highlight_goto = { fg = "#00ff00" },
+	highlight_close = { fg = "#ff0000" },
+	hlgoto  = "CompassGotoWindow",
+	hlclose = "CompassCloseWindow",
 	precedence = { -- Sets the precedence for letters to be used
 		'j', 'k', 'h',
 		'l', 'a', 's',
