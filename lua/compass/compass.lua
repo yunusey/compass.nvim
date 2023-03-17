@@ -1,75 +1,21 @@
+
+local actions = require("compass.actions")
+local utils   = require("compass.utils")
+
 local init_windows = {} -- initialized windows will be stored here
-
-local deleteWindowsAndBuffers = function (invisible_win)
-	local win = invisible_win[1]
-	local buf = invisible_win[2]
-	vim.api.nvim_win_close(win, true)
-	vim.api.nvim_buf_delete(buf, {
-		force = true
-	})
-
-	for _, wins in pairs(init_windows) do
-		local win_c = wins[1]
-		vim.api.nvim_win_close(win_c, true)
-		local buf_c = wins[2]
-		vim.api.nvim_buf_delete(buf_c, {
-			force = true
-		})
-	end
-end
-
-local openWinByHint = function (str)
-	if init_windows[str] ~= nil then
-		local aimed_win = init_windows[str][3]
-		vim.api.nvim_set_current_win(aimed_win)
-	end
-	init_windows = {}
-end
-
-local closeWinByHint = function (str)
-	if init_windows[str] ~= nil then
-		local aimed_win = init_windows[str][3]
-		vim.api.nvim_win_close(aimed_win, true)
-	end
-	init_windows = {}
-end
-
-local createBufferWith = function (win_str, hlgoto, hlclose)
-
-	-- win_str variable should be fully lower-cased char.
-	-- So, we can use this!
-	-- Let's say when typed 'j', it will set the current window to {window}
-	-- Then, when typed 'J', why not close it?
-
-	local buf_str = string.lower(win_str) .. string.upper(win_str)
-	local new_buf = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_buf_set_lines(new_buf, 0, -1, false, {buf_str})
-	vim.api.nvim_buf_add_highlight(new_buf, -1, hlgoto, 0, 0, #win_str)
-	vim.api.nvim_buf_add_highlight(new_buf, -1, hlclose, 0, #win_str, -1)
-
-	return new_buf
-
-end
-
-local createWindowWith = function (buffer, row, col, window_opts)
-
-	local window = vim.api.nvim_open_win(buffer, false, {
-		relative = "editor",
-		style = "minimal",
-		row = row, col = col,
-		width = window_opts.width, height = window_opts.height,
-		border = window_opts.border,
-	})
-
-	return window
-end
 
 local compass = function (opts)
 
+	-- Reset init_windows
+	init_windows = {}
+	-- Reset selected_window
+	actions.selected_window = nil
+	actions.selected_str = opts.selected_str
 
-	-- Set the highlight
+	-- Set the highlights
 	vim.api.nvim_set_hl(0, opts.hlgoto, opts.highlight_goto)
 	vim.api.nvim_set_hl(0, opts.hlclose, opts.highlight_close)
+	vim.api.nvim_set_hl(0, opts.hlswap, opts.highlight_swap)
 
 	local tab_page = vim.api.nvim_get_current_tabpage()
 	local windows  = vim.api.nvim_tabpage_list_wins(tab_page)
@@ -86,14 +32,15 @@ local compass = function (opts)
 		local width  = vim.api.nvim_win_get_width(i)
 		local height = vim.api.nvim_win_get_height(i)
 		-- Set the position for each window
-		local nrow = row + math.ceil(height / 2) - 1
-		local ncol = col + math.ceil(width / 2) - 1
+		local nrow = row + math.ceil(height / 2) - math.ceil(opts.window.height / 2) - 1
+		local ncol = col + math.ceil(width / 2) - math.ceil(opts.window.width / 2) - 1
 
 		-- Create new buffer
-		local new_buf = createBufferWith(win_str, opts.hlgoto, opts.hlclose)
+		local new_buf = utils.createBufferWith(win_str, opts.format,
+			opts.hlgoto, opts.hlclose, opts.hlswap)
 
 		-- Create the window
-		local new_win = createWindowWith(new_buf, nrow, ncol, opts.window)
+		local new_win = utils.createWindowWith(new_buf, nrow, ncol, opts.window)
 
 		-- For every hint (win_str), we'll have a tuple:
 		-- ([window-created], [buffer-created], [window-aimed])
@@ -113,14 +60,24 @@ local compass = function (opts)
 	for _, i in ipairs(opts.precedence) do
 		vim.api.nvim_buf_set_keymap(buf, "n", i, "", {
 			callback = function ()
-				deleteWindowsAndBuffers({ win, buf })
-				openWinByHint(i)
+				utils.deleteWindowsAndBuffers(init_windows, { win, buf })
+				actions.openWinByHint(init_windows, i)
 			end
 		})
 		vim.api.nvim_buf_set_keymap(buf, "n", string.upper(i), "", {
 			callback = function ()
-				deleteWindowsAndBuffers({ win, buf })
-				closeWinByHint(i)
+				utils.deleteWindowsAndBuffers(init_windows, { win, buf })
+				actions.closeWinByHint(init_windows, i)
+			end
+		})
+		vim.api.nvim_buf_set_keymap(buf, "n", "<A-" .. i .. ">", "", {
+			callback = function ()
+				local ok = actions.selectWindow(init_windows, i)
+				-- Selects window as to be swapped. If there are two windows selected;
+				-- just swaps them, and sets the current window as the lastly selected win
+				if ok then
+					utils.deleteWindowsAndBuffers(init_windows, { win, buf })
+				end
 			end
 		})
 	end
@@ -129,7 +86,7 @@ local compass = function (opts)
 	if opts.cancel ~= '' then
 		vim.api.nvim_buf_set_keymap(buf, "n", opts.cancel, "", {
 			callback = function ()
-				deleteWindowsAndBuffers({ win, buf })
+				utils.deleteWindowsAndBuffers(init_windows, { win, buf })
 			end
 		})
 	end
