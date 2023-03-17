@@ -3,10 +3,16 @@ local M = {}
 M.opts = {}
 
 M.def_opts = { -- Default options
-	highlight_goto = { fg = "#00ff00" },
+	highlight_goto  = { fg = "#00ff00" },
 	highlight_close = { fg = "#ff0000" },
+	highlight_swap  = { fg = "#ffff00" },
 	hlgoto  = "CompassGotoWindow",
 	hlclose = "CompassCloseWindow",
+	hlswap  = "CompassSwapWindow",
+
+	format = "#g\n#c\n#s",
+	selected_str = '🟢',
+
 	precedence = { -- Sets the precedence for letters to be used
 		'j', 'k', 'h',
 		'l', 'a', 's',
@@ -16,18 +22,22 @@ M.def_opts = { -- Default options
 		'i', 'o', 'c',
 		'v', 'b', 'n',
 	},
+
 	cancel = "q", -- When clicked, closes the compass...
+
 	window = { -- Gets the same argument as |nvim_open_win|
-		width  = 2,
-		height = 1,
+		width  = 5,
+		height = 3,
 		border = "rounded",
 		style  = "minimal",
 	},
+
 	keymaps = {
 		i = "",
 		n = "<leader>ww",
 		v = "",
 	},
+
 }
 
 M.setup = function (user_opts) -- User options

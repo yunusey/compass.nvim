@@ -2,6 +2,8 @@
 
 vim.api.nvim_create_user_command("Compass", function (args)
 	local compass = require("compass")
-	compass.compass(args["args"])
+	-- Arguments are not implemented yet!..
+	local arguments = args["args"]
+	compass.compass(--[[arguments]])
 end, { nargs = "?" })
 

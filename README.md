@@ -41,10 +41,16 @@ PS: There are also other package managers that you can use...
 `compass.nvim` comes with several default options:
 ```lua
 M.def_opts = { -- Default options
-	highlight_goto = { fg = "#00ff00" },
+	highlight_goto  = { fg = "#00ff00" },
 	highlight_close = { fg = "#ff0000" },
+	highlight_swap  = { fg = "#ffff00" },
 	hlgoto  = "CompassGotoWindow",
 	hlclose = "CompassCloseWindow",
+	hlswap  = "CompassSwapWindow",
+
+	format = "#g#c\n#s",
+	selected_str = '🟢',
+
 	precedence = { -- Sets the precedence for letters to be used
 		'j', 'k', 'h',
 		'l', 'a', 's',
@@ -54,18 +60,22 @@ M.def_opts = { -- Default options
 		'i', 'o', 'c',
 		'v', 'b', 'n',
 	},
-	cancel = "q", -- Cancels compass
+
+	cancel = "q", -- When clicked, closes the compass...
+
 	window = { -- Gets the same argument as |nvim_open_win|
-		width  = 2,
-		height = 1,
+		width  = 5,
+		height = 2,
 		border = "rounded",
 		style  = "minimal",
 	},
+
 	keymaps = {
 		i = "",
 		n = "<leader>ww",
 		v = "",
 	},
+
 }
 ```
 
@@ -76,7 +86,34 @@ You can change the color and the style of the highlights. Takes the same argumen
 
 * `CompassCloseWindow`: This highlight is used for highlighting the upper-cased string which is a key to close that window.
 
-PS: By default, `CompassGotoWindow` is highlighted green to show that that key is used for going that window while `CompassCloseWindow` is highlighted red to show that key is used for closing that window. 
+* `CompassSwapWindow`: This highlight is used for highlighting the `<A-{string}>` which is a key to select the window.
+
+PS: By default;
+
+`CompassGotoWindow` is highlighted green to show that that key is used for going that window.
+
+`CompassCloseWindow` is highlighted red to show that key is used for closing that window
+
+`CompassSwapWindow` is highlighted yellow to show that key is used for selecting that window.
+
+## Format
+
+Format is the format string of the hint windows. You can use '\n' chars for starting new lines.
+
+* `#g` for go-string.
+
+* `#c` for close-string.
+
+* `#s` for swap-string.
+
+One example is given below:
+
+```lua
+format = "#g\n#c\n#s"
+```
+
+## Selected String
+The buffer's text will change to `selected_str` when that window is selected. 
 
 ## Precedence
 You can set your ```precedence```. While creating hints, compass iterates through all the ```precedence``` table. Say you have three windows open, and your precedence table is the following:
