@@ -1,13 +1,18 @@
 # compass.nvim 🧭
 Quickly iterate through your pages using hints provided. 😎
 
-**PS: There is a new feature uploaded, which basically closes the windows. If this note is not deleted, it means that I did not change the video and the image yet! Please check Configuration**
 
-**NEW FEATURES UPCOMING**
 
-![](https://user-images.githubusercontent.com/107340417/225203822-956b351c-5c3e-492e-b22d-4b1f226d969a.png)
+https://user-images.githubusercontent.com/107340417/225804632-f61ec0e2-a25a-4847-bde1-16431802a915.mp4
 
-https://user-images.githubusercontent.com/107340417/225202546-4e4cb239-5f6f-47bd-bdbf-b0668749f012.mp4
+* You can go windows by typing lower-cased string!
+
+* You can close windows by typing upper-cased string!
+
+* You can swap two windows by selecting two windows by clicking Alt key and lower-cased string at the same time!
+
+![Example](https://user-images.githubusercontent.com/107340417/225804688-c7c46657-1dd9-409f-9b23-34acf3858557.png)
+
 
 # Setup 📦
 You can setup using different package managers.
@@ -112,6 +117,11 @@ One example is given below:
 format = "#g\n#c\n#s"
 ```
 
+This should give you a hint-window like this:
+
+![Format](https://user-images.githubusercontent.com/107340417/225805119-f0601668-0943-4731-8b69-e3ace162a0a6.png)
+
+
 ## Selected String
 The buffer's text will change to `selected_str` when that window is selected. 
 
@@ -170,7 +180,7 @@ All the contributions are highly appreciated. Please, make sure that you are cre
 * Create ```docs/```
 * Get tabline in the game (such hard thing 😐🥲)
 
-# Closing Words
+# Closing Words 📝
 This plugin is actively getting updates, make sure to update your plugin very often.
 
 Thank you for visiting compass.nvim! Make sure to leave a star 😏
